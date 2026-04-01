@@ -23,9 +23,11 @@ supabase: Client = create_client(supabase_url, supabase_key)
 # REGISTRO DE RUTAS (BLUEPRINTS)
 # --------------------------------------------------
 from routes.test import test_pb
+from routes.articulos import articulos_pb
 
 
 app.register_blueprint(test_pb, url_prefix='/api')
+app.register_blueprint(articulos_pb, url_prefix='/api')
 
 if __name__ == '__main__':
     # Flask correrá en el puerto 5000 por defecto
