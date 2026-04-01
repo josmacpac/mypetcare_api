@@ -6,7 +6,6 @@ def token_required(f):
     def decorated(*args, **kwargs):
         from app import supabase
         
-        # 1. Buscar la cabecera de Authorization
         auth_header = request.headers.get('Authorization')
         
         if not auth_header:
@@ -16,13 +15,9 @@ def token_required(f):
             }), 401
             
         try:
-            # 2. El header viene como "Bearer <token>", separamos la palabra Bearer
+            
             token = auth_header.split(" ")[1]
-            
-            # 3. Le preguntamos a Supabase si el token es válido
             user_response = supabase.auth.get_user(token)
-            
-            # 4. Si es válido, guardamos los datos del usuario en el contexto por si los necesitas
             request.user = user_response.user
             
         except Exception as e:
