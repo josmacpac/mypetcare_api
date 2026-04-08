@@ -51,11 +51,11 @@ def post_articulo():
         response = supabase.table('articulos').insert({
                 "sku": data['sku'], 
                 "nombre_articulo": data['nombre_articulo'],
-                "presentacion": data["presentacion"],
                 "categoria_articulo": data["categoria_articulo"],
                 "contenido_empaque": data["contenido_empaque"],
                 "stock_minimo": data["stock_minimo"],
-                "precio_venta": data["precio_venta"]
+                "precio_venta": data["precio_venta"],
+                "presentacion": data["presentacion"]
 
         }).execute()      
         return jsonify({
@@ -67,7 +67,8 @@ def post_articulo():
     except Exception as e:
         return jsonify({
             "status": "error",
-            "message": "Error en la conexión o en el Blueprint",
+            "message": str(e),
             "detalles": str(e)
         }), 500
+
 
