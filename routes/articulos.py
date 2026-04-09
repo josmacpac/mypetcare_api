@@ -10,20 +10,26 @@ articulos_pb = Blueprint('articulos', __name__)
 def get_articulos():
     from app import supabase
     try:
-        # Intentamos consultar registro de articulos
-        # (Si la tabla está vacía, no importa, regresará un arreglo [])
-        response = supabase.table('articulos').select("*").execute()
+        # Usamos alias (nombre_que_quiero:columna_original) para evitar conflictos
+        # Estructura: tabla_relacionada(alias:columna_de_la_otra_tabla)
+        query = """
+            *,
+            cat_info:categoria_articulos(nombre_categoria),
+            pres_info:presentacion(presentacion)
+        """
+        
+        response = supabase.table('articulos').select(query).execute()
         
         return jsonify({
             "status": "success",
-            "message": "¡Blueprint y conexión a Supabase funcionando al 100%!",
+            "message": "¡Lista de artículos sincronizada!",
             "data": response.data
         }), 200
         
     except Exception as e:
         return jsonify({
             "status": "error",
-            "message": "Error en la conexión o en el Blueprint",
+            "message": "Error al realizar el Join en la base de datos",
             "detalles": str(e)
         }), 500
 
