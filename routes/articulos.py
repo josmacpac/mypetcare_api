@@ -78,3 +78,76 @@ def post_articulo():
         }), 500
 
 
+@articulos_pb.route('/articulos/<string:sku>', methods=['PUT'])
+@token_required
+def put_articulo(sku):
+    from app import supabase
+    try:
+        data = request.get_json()
+        
+        # Campos que permitimos actualizar
+        campos_editables = [
+            'nombre_articulo', 'presentacion', 
+            'categoria_articulo', 'contenido_empaque', 
+            'stock_minimo', 'precio_venta'
+        ]
+        
+        # Filtramos solo los campos que vienen en el JSON para no borrar datos por error
+        datos_a_actualizar = {campo: data[campo] for campo in campos_editables if campo in data}
+
+        if not datos_a_actualizar:
+            return jsonify({
+                "status": "error",
+                "message": "No se enviaron campos para actualizar"
+            }), 400
+
+        # Ejecutamos el update filtrando por el SKU
+        response = supabase.table('articulos').update(datos_a_actualizar).eq('sku', sku).execute()
+
+        if not response.data:
+            return jsonify({
+                "status": "error",
+                "message": f"No se encontró el artículo con SKU: {sku}"
+            }), 404
+
+        return jsonify({
+            "status": "success",
+            "message": "¡Artículo actualizado correctamente!",
+            "data": response.data
+        }), 200
+        
+    except Exception as e:
+        return jsonify({
+            "status": "error",
+            "message": "Error al actualizar el artículo",
+            "detalles": str(e)
+        }), 500
+    
+
+@articulos_pb.route('/articulos/<string:sku>', methods=['DELETE'])
+@token_required
+def delete_articulo(sku):
+    from app import supabase
+    try:
+        # Ejecutamos el borrado filtrando por SKU
+        response = supabase.table('articulos').delete().eq('sku', sku).execute()
+
+        # Si response.data está vacío, significa que el SKU no existía
+        if not response.data:
+            return jsonify({
+                "status": "error",
+                "message": f"No se pudo eliminar: El SKU {sku} no existe"
+            }), 404
+
+        return jsonify({
+            "status": "success",
+            "message": f"Artículo con SKU {sku} eliminado exitosamente",
+            "data": response.data
+        }), 200
+
+    except Exception as e:
+        return jsonify({
+            "status": "error",
+            "message": "Error al intentar eliminar el artículo",
+            "detalles": str(e)
+        }), 500
