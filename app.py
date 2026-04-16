@@ -28,11 +28,13 @@ supabase: Client = create_client(supabase_url, supabase_key)
 from routes.test import test_pb
 from routes.articulos import articulos_pb
 from routes.proveedores import proveedores_pb
+from routes.entradas import entradas_pb
 
 
 app.register_blueprint(test_pb, url_prefix='/api')
 app.register_blueprint(articulos_pb, url_prefix='/api')
 app.register_blueprint(proveedores_pb, url_prefix='/api')
+app.register_blueprint(entradas_pb, url_prefix='/api')
 
 
 if __name__ == '__main__':
