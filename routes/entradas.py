@@ -36,6 +36,8 @@ def registrar_entrada():
                 "id_articulo": item['articulo_id'],
                 "cantidad": item['cantidad'],
                 "costo_empaque": item['costo_unitario'],
+                "lote": item['lote'],
+                "fecha_caducidad" : item['fecha_caducidad']
             })
 
         # 4. Inserción masiva (bulk insert) en "detalle_entrada"
