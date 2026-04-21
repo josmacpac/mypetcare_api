@@ -22,7 +22,7 @@ def registrar_entrada():
             "id_proveedor": cabecera['id_proveedor'],
             "factura": cabecera['no_factura'],
             "monto_factura": cabecera['total_factura'],
-            # "fecha_compra": se puede omitir si en la DB tienes DEFAULT now()
+            "fecha_compra": cabecera['fecha_compra']
         }).execute()
 
         # Obtenemos el ID generado por Supabase
@@ -36,7 +36,6 @@ def registrar_entrada():
                 "id_articulo": item['articulo_id'],
                 "cantidad": item['cantidad'],
                 "costo_empaque": item['costo_unitario'],
-                "id_laboratorio": cabecera['id_laboratorio'] 
             })
 
         # 4. Inserción masiva (bulk insert) en "detalle_entrada"
