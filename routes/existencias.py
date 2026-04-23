@@ -36,3 +36,15 @@ def obtener_lotes_por_articulo(articulo_id):
     except Exception as e:
         print(f"Error en lotes: {e}")
         return jsonify({"error": "No se pudieron obtener los lotes"}), 500
+    
+@existencias_pb.route('/reporte-caducidad', methods=['GET'])
+@token_required
+def obtener_reporte_caducidad():
+    from app import supabase
+    try:
+        # Consultamos la vista de caducidades
+        response = supabase.table('vista_reporte_caducidad').select("*").execute()
+        return jsonify(response.data), 200
+    except Exception as e:
+        print(f"Error en reporte caducidad: {e}")
+        return jsonify({"error": "No se pudo generar el reporte"}), 500
