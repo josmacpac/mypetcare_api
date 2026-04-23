@@ -20,3 +20,19 @@ def obtener_existencia():
     except Exception as e:
         print(f"Error al obtener inventario: {e}")
         return jsonify({"error": "No se pudo cargar el inventario"}), 500
+
+@existencias_pb.route('/existencias/lotes/<int:articulo_id>', methods=['GET'])
+@token_required
+def obtener_lotes_por_articulo(articulo_id):
+    from app import supabase
+    try:
+        # Consultamos la vista filtrando por el id_articulo
+        response = supabase.table('vista_detalle_lotes') \
+            .select("*") \
+            .eq('id_articulo', articulo_id) \
+            .execute()
+        
+        return jsonify(response.data), 200
+    except Exception as e:
+        print(f"Error en lotes: {e}")
+        return jsonify({"error": "No se pudieron obtener los lotes"}), 500
