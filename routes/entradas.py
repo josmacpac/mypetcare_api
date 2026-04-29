@@ -22,7 +22,8 @@ def registrar_entrada():
             "id_proveedor": cabecera['id_proveedor'],
             "factura": cabecera['no_factura'],
             "monto_factura": cabecera['total_factura'],
-            "fecha_compra": cabecera['fecha_compra']
+            "fecha_compra": cabecera['fecha_compra'], 
+            "id_clinica": cabecera['id_clinica']
         }).execute()
 
         # Obtenemos el ID generado por Supabase
