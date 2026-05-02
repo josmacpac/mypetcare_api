@@ -55,3 +55,6 @@ def obtener_reporte_caducidad():
     except Exception as e:
         print(f"Error en reporte caducidad: {e}")
         return jsonify({"error": "No se pudo generar el reporte"}), 500
+    
+    ##Se actualizan vistas en supabase para filtrar por id_clinica
+    
